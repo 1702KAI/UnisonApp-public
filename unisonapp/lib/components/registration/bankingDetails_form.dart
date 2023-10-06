@@ -1,21 +1,40 @@
 import 'package:flutter/material.dart';
-
-import '../utils/config.dart';
-import 'button.dart';
+import 'package:provider/provider.dart';
+import 'package:unisonapp/utils/validators.dart';
+import '../../data_classes/bankDetails_data.dart';
+import '../../utils/config.dart';
+import '../button.dart';
 
 class BankingDetailsForm extends StatefulWidget {
-  const BankingDetailsForm({Key? key}) : super(key: key);
+  final Function(bool)
+      onValidationChanged; // Add the onValidationChanged callback
+  final Function(int) changeTabIndex; // Add the changeTabIndex callback
+
+  const BankingDetailsForm({
+    Key? key,
+    required this.onValidationChanged,
+    required this.changeTabIndex, // Required onValidatarameter
+  }) : super(key: key);
 
   @override
   State<BankingDetailsForm> createState() => _BankingDetailsFormState();
 }
 
-class _BankingDetailsFormState extends State<BankingDetailsForm>{
+class _BankingDetailsFormState extends State<BankingDetailsForm> {
   final _formKey = GlobalKey<FormState>();
   final _bankNameController = TextEditingController();
   final _branchNameController = TextEditingController();
   final _accountNumberController = TextEditingController();
-  
+  late BankDetailsData bankingDetailsData;
+
+  @override
+  void initState() {
+    super.initState();
+    bankingDetailsData =
+        Provider.of<BankDetailsDataProvider>(context, listen: false)
+            .bankDetailsData;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -28,17 +47,17 @@ class _BankingDetailsFormState extends State<BankingDetailsForm>{
             children: <Widget>[
               TextFormField(
                 controller: _bankNameController,
+                validator: (value) => Validator.validateField('Bank', value),
                 keyboardType: TextInputType.emailAddress,
                 cursorColor: Config.secondaryColor,
                 style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
-                  hintText: 'Bank',
-                  labelText: 'Bank',
-                  labelStyle: TextStyle(color: Colors.black38),
-                  alignLabelWithHint: true,
-                  prefixIcon: Icon(Icons.attach_money_outlined),
-                  prefixIconColor: Config.secondaryColor
-                ),
+                    hintText: 'Bank',
+                    labelText: 'Bank',
+                    labelStyle: TextStyle(color: Colors.black38),
+                    alignLabelWithHint: true,
+                    prefixIcon: Icon(Icons.attach_money_outlined),
+                    prefixIconColor: Config.secondaryColor),
               ),
               Config.spaceSmall,
               TextFormField(
@@ -74,7 +93,16 @@ class _BankingDetailsFormState extends State<BankingDetailsForm>{
               Button(
                 width: double.infinity,
                 title: 'Confirm and Continue',
-                onPressed: () {},
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    bankingDetailsData.bank = _bankNameController.text;
+                    bankingDetailsData.branch = _branchNameController.text;
+                    bankingDetailsData.accountNumber =
+                        _accountNumberController.text;
+                    Navigator.pushNamed(context, 'departmentPage');
+                  } else {
+                  }
+                },
                 disable: false,
                 textColor: Config.secondaryColor,
               ),

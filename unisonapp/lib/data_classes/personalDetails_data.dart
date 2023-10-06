@@ -5,7 +5,7 @@ class PersonalDetailsData extends ChangeNotifier {
   String lastName;
   String email;
   String country;
-  String birthday;
+  // String birthday;
   String mobileNumber;
 
   PersonalDetailsData({
@@ -13,7 +13,7 @@ class PersonalDetailsData extends ChangeNotifier {
     required this.lastName,
     required this.email,
     required this.country,
-    required this.birthday,
+    // required this.birthday,
     required this.mobileNumber,
   });
 
@@ -22,14 +22,14 @@ class PersonalDetailsData extends ChangeNotifier {
     String? lastName,
     String? email,
     String? country,
-    String? birthday,
+    // String? birthday,
     String? mobileNumber,
   }) {
     this.firstName = firstName!;
     this.lastName = lastName!;
     this.email = email!;
     this.country = country!;
-    this.birthday = birthday!;
+    // this.birthday = birthday!;
     this.mobileNumber = mobileNumber!;
     notifyListeners();
   }
@@ -39,7 +39,7 @@ class PersonalDetailsData extends ChangeNotifier {
     this.lastName = '';
     this.email = '';
     this.country = '';
-    this.birthday = '';
+    // this.birthday = '';
     this.mobileNumber = '';
     notifyListeners();
   }
@@ -51,12 +51,12 @@ class PersonalDetailDataProvider extends ChangeNotifier {
     lastName: '',
     email: '',
     country: '',
-    birthday: '',
+    // birthday: '',
     mobileNumber: '',
 
       );
 
   PersonalDetailsData get personalDetailsData => _personalDetailDataProvider;
 
-  get userData => null;
+
 }

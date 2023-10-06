@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:unisonapp/data_classes/addressDetails_data.dart';
 
-import '../utils/config.dart';
-import 'button.dart';
+import '../../utils/config.dart';
+import '../button.dart';
 
 class AddressDetailsForm extends StatefulWidget {
-  const AddressDetailsForm({Key? key}) : super(key: key);
+   final Function(bool) onValidationChanged; // Add the onValidationChanged callback
+  final Function(int) changeTabIndex; // Add the changeTabIndex callback
+
+  const AddressDetailsForm({
+    Key? key,
+    required this.onValidationChanged,
+    required this.changeTabIndex, // Required onValidatarameter
+  }) : super(key: key);
 
   @override
   State<AddressDetailsForm> createState() => _AddressDetailsFormState();
@@ -17,6 +26,15 @@ class _AddressDetailsFormState extends State<AddressDetailsForm> {
   final _address2Controller = TextEditingController();
   final _postalCodeController = TextEditingController();
   final _provinceController = TextEditingController();
+  late AddressDetailsData addressDetailsData;
+
+  @override
+  void initState() {
+    super.initState();
+    addressDetailsData =
+        Provider.of<AddressDetailsDataProvider>(context, listen: false)
+            .addressDetailsData;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,11 +121,28 @@ class _AddressDetailsFormState extends State<AddressDetailsForm> {
                 ),
               ),
               // Login button
-             Config.spaceSmall,
+              Config.spaceSmall,
               Button(
                 width: double.infinity,
                 title: 'Confirm and Continue',
-                onPressed: () {},
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    addressDetailsData.setData(
+                      city: _cityNameController.text,
+                      addressLine1: _address1Controller.text,
+                      addressLine2: _address2Controller.text,
+                      postalCode: _postalCodeController.text,
+                      provinceState: _provinceController.text,
+                    );
+                    widget.onValidationChanged(true);
+                    widget.changeTabIndex(2);
+                    print(addressDetailsData.city);
+                    print(addressDetailsData.addressLine2);
+                    print(addressDetailsData.addressLine1);
+                  } else {
+                    widget.onValidationChanged(false);
+                  }
+                },
                 disable: false,
                 textColor: Config.secondaryColor,
               ),

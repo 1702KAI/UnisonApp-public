@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:unisonapp/providers/dio_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:unisonapp/models/authModel.dart';
+// import 'package:unisonapp/providers/dio_provider.dart';
+import '../providers/dio_provider.dart';
 import '../utils/config.dart';
 import 'button.dart';
 
@@ -69,19 +72,30 @@ class _LoginFormState extends State<LoginForm> {
           ),
           Config.spaceSmall,
           //login button
-          Button(
-              width: double.infinity,
-              title: 'Sign In',
-              onPressed: () async {
-                print(_emailController.text);
-                print(_passController.text);
-                final token = await DioProvider()
-                    .getToken(_emailController.text, _passController.text);
-                final user = await DioProvider().getUser(token);
-                print(user);
-                // Navigator.of(context).pushNamed('main');
-              },
-              disable: false)
+          Consumer<AuthModel>(
+            builder: (context, auth, child) => Container(
+              child: Button(
+                width: double.infinity,
+                title: 'Sign In',
+                onPressed: () async {
+                  print(_emailController.text);
+                  print(_passController.text);
+                  final token = await DioProvider()
+                      .getToken(_emailController.text, _passController.text);
+                  if (token != null && token.isNotEmpty) {
+                    // Token retrieval was successful
+                    auth.loginSuccess();
+                    print(token);
+                    Navigator.of(context).pushNamed('main');
+                  } else {
+                    // Handle the case where token retrieval failed
+                    print('Token retrieval failed');
+                  }
+                },
+                disable: false,
+              ),
+            ),
+          )
         ],
       ),
     );

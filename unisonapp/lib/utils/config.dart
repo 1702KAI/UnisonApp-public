@@ -1,14 +1,12 @@
-
 import 'package:flutter/material.dart';
 
-class Config{
+class Config {
   static MediaQueryData? mediaQueryData;
   static double? screenWidth;
   static double? screenHeight;
 
-
 // these has to be initialized first as we need constant values for them
-  void init(BuildContext context){
+  void init(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     screenWidth = mediaQueryData!.size.width;
     screenHeight = mediaQueryData!.size.height;
@@ -25,27 +23,28 @@ class Config{
   
    */
 
-
   static get widthSize => screenWidth!;
   static get heightSize => screenHeight!;
 
   static const spaceSmall = SizedBox(
-    height: 25,);
+    height: 25,
+  );
   static final spaceMedium = SizedBox(
-    height: screenHeight! * 0.05,);
+    height: screenHeight! * 0.05,
+  );
   static final spaceLarge = SizedBox(
-    height: screenHeight! * 0.08,);
-static final spaceHuge = SizedBox(
-  height: screenHeight != null ? screenHeight! * 0.1 : 0,
-);
-  
-  final TextStyle helveticaFont = const TextStyle(
-  fontFamily: 'Helvetica', // Set the font family to Helvetica
-  fontSize: 16, // Set the desired font size
-  fontWeight: FontWeight.normal, // Set the desired font weight
-  // You can add more font properties here if needed
-);
+    height: screenHeight! * 0.08,
+  );
+  static final spaceHuge = SizedBox(
+    height: screenHeight != null ? screenHeight! * 0.1 : 0,
+  );
 
+  final TextStyle helveticaFont = const TextStyle(
+    fontFamily: 'Helvetica', // Set the font family to Helvetica
+    fontSize: 16, // Set the desired font size
+    fontWeight: FontWeight.normal, // Set the desired font weight
+    // You can add more font properties here if needed
+  );
 
   //textform field border
 
@@ -55,17 +54,19 @@ static final spaceHuge = SizedBox(
 
   static const focusBorder = OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(8)),
-    borderSide: BorderSide(color: Color.fromARGB(255, 49, 114, 83),),
-  );
-  
-  static const errorBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(8)),
-    borderSide: BorderSide(color: Colors.red,),
+    borderSide: BorderSide(
+      color: Color.fromARGB(255, 49, 114, 83),
+    ),
   );
 
+  static const errorBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(8)),
+    borderSide: BorderSide(
+      color: Colors.red,
+    ),
+  );
 
   static const primaryColor = Color(0xFFD0FC02);
   static const secondaryColor = Color(0xFF000000);
-  
+  static const paintColor = Color(0xFFF3F8DF);
 }
-

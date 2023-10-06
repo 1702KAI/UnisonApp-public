@@ -26,7 +26,7 @@ class DepartmentDetailsData extends ChangeNotifier{
   
 }
 
-class DepartmentDetialsDataProvider extends ChangeNotifier{
+class DepartmentDetailsDataProvider extends ChangeNotifier{
   final DepartmentDetailsData _departmentDetailsDataProvider = DepartmentDetailsData(
     departmentName: '',
     role: '',

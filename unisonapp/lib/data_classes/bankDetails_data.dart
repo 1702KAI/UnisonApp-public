@@ -30,7 +30,7 @@ class BankDetailsData extends ChangeNotifier {
   }
 }
 
-class bankDetailsDataProvider extends ChangeNotifier {
+class BankDetailsDataProvider extends ChangeNotifier {
   final BankDetailsData _bankDetailsDataProvider = BankDetailsData(
     bank: '',
     branch: '',
