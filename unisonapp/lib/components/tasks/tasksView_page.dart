@@ -2,7 +2,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:unisonapp/utils/config.dart';
-
 import '../../data_classes/tasks_data.dart';
 
 class TaskListPage extends StatefulWidget {
@@ -13,18 +12,27 @@ class TaskListPage extends StatefulWidget {
 }
 
 class _TaskListPageState extends State<TaskListPage> {
-  List<Task> tasks = [
-    Task(
+  late TaskDataProvider taskDataProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    // taskDataProvider = Provider.of<TaskDataProvider>(context, listen: false);
+  }
+
+
+  List<TaskData> tasks = [
+    TaskData(
       description: 'Task 1',
       dueDate: DateTime.now().add(Duration(days: 1)),
       taskType: 'Type A',
     ),
-    Task(
+    TaskData(
       description: 'Task 2',
       dueDate: DateTime.now().add(Duration(days: 2)),
       taskType: 'Type B',
     ),
-    Task(
+    TaskData(
       description: 'Task 3',
       dueDate: DateTime.now().add(Duration(days: 3)),
       taskType: 'Type C',
@@ -89,7 +97,7 @@ class _TaskListPageState extends State<TaskListPage> {
   void _addTask() {
     // You can implement logic to add a new task here
     setState(() {
-      tasks.add(Task(
+      tasks.add(TaskData(
         description: 'New Task',
         dueDate: DateTime.now().add(Duration(days: 1)),
         taskType: 'New Type',
@@ -100,7 +108,7 @@ class _TaskListPageState extends State<TaskListPage> {
   void _editTask(int index) {
     // You can implement logic to edit an existing task here
     setState(() {
-      tasks[index] = Task(
+      tasks[index] = TaskData(
         description: 'Edited Task',
         dueDate: DateTime.now().add(Duration(days: 1)),
         taskType: 'Edited Type',

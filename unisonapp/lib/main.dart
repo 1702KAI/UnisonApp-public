@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unisonapp/data_classes/addressDetails_data.dart';
@@ -11,10 +9,10 @@ import 'package:unisonapp/screens/departmentDetails_page.dart';
 import 'package:unisonapp/screens/registrationSuccess_page.dart';
 import 'package:unisonapp/screens/welcome_page.dart';
 import 'package:unisonapp/utils/config.dart';
-
 import 'components/tasks/tasksView_page.dart';
 import 'data_classes/bankDetails_data.dart';
 import 'data_classes/departmentDetails_data.dart';
+import 'data_classes/tasks_data.dart';
 import 'main_layout.dart';
 import 'models/authModel.dart';
 
@@ -27,6 +25,7 @@ void main() {
         ChangeNotifierProvider.value(value: AddressDetailsDataProvider()),
         ChangeNotifierProvider.value(value: BankDetailsDataProvider()),
         ChangeNotifierProvider.value(value: DepartmentDetailsDataProvider()),
+        ChangeNotifierProvider.value(value: TaskDataProvider()),
       ],
       child: const MyApp(),
     ),

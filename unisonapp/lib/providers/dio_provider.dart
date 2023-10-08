@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
+import 'package:unisonapp/data_classes/tasks_data.dart';
 
 class DioProvider {
   Future<dynamic> getToken(String email, String password) async {
@@ -33,6 +34,86 @@ class DioProvider {
       print(error);
     }
   }
+
+
+// Create a task
+Future<dynamic> createTask(String token, TaskData task) async {
+  try {
+    var response = await Dio().post(
+      'http://127.0.0.1:8000/api/tasks',
+      data: {
+        'description': task.description,
+        'dueDate': task.dueDate.toIso8601String(),
+        'taskType': task.taskType,
+      },
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+
+    if (response.statusCode == 201) {
+      return json.encode(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+}
+
+// Retrieve all tasks
+Future<List<dynamic>> getTasks(String token) async {
+  try {
+    var response = await Dio().get(
+      'http://127.0.0.1:8000/api/tasks',
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+
+    if (response.statusCode == 200) {
+      // Assuming the response contains a list of tasks in JSON format
+      List<dynamic> tasks = response.data;
+
+      return tasks;
+    } else {
+      // Handle error
+      return [];
+    }
+  } catch (error) {
+    print(error);
+    // Handle error
+    return [];
+  }
+}
+
+// Update a task
+Future<dynamic> updateTask(String token, int taskId, TaskData task) async {
+  try {
+    var response = await Dio().put(
+      'http://127.0.0.1:8000/api/tasks/$taskId',
+      data: {
+        'description': task.description,
+        'dueDate': task.dueDate.toIso8601String(),
+        'taskType': task.taskType,
+      },
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+
+    if (response.statusCode == 200) {
+      return json.encode(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+}
+
+// Delete a task
+Future<void> deleteTask(String token, int taskId) async {
+  try {
+    await Dio().delete(
+      'http://127.0.0.1:8000/api/tasks/$taskId',
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+  } catch (error) {
+    print(error);
+  }
+}
+
 
   Future<dynamic> registerUser(
     String firstName,

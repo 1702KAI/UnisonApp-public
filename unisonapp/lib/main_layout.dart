@@ -1,8 +1,12 @@
 // import 'dart:convert';
 
 // import 'package:dio/dio.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unisonapp/providers/dio_provider.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:unisonapp/providers/dio_provider.dart';
 import 'package:unisonapp/screens/home_page.dart';
@@ -30,25 +34,24 @@ class _MainLayoutState extends State<MainLayout> {
     _scaffoldKey.currentState?.openDrawer(); // Open the drawer
   }
 
-  //   Future<void> getData() async {
-  //   final token = await DioProvider().getToken('imeth@metana.io', 'vinnath123');
-  //   // final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   // final token = prefs.getString('token') ?? '';
+    Future<void> getData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? '';
 
-  //   if (token.isNotEmpty && token != '') {
-  //     final response = await DioProvider().getUser(token);
-  //     if (response != null) {
-  //       setState(() {
-  //         user = json.decode(response);
-  //       });
-  //     }
-  //   }
-  // }
+    if (token.isNotEmpty && token != '') {
+      final response = await DioProvider().getUser(token);
+      if (response != null) {
+        setState(() {
+          user = json.decode(response);
+        });
+      }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    // getData();
+    getData();
   }
 
   // Function to build the Drawer
@@ -58,13 +61,12 @@ Widget buildDrawer() {
       padding: EdgeInsets.zero,
       children: <Widget>[
         DrawerHeader(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Config.paintColor,
           ),
           child: Text(
-            'Imeth',
-            // user['first_name'], // Remove 'const' here
-            style: TextStyle(
+            user['first_name'], // Remove 'const' here
+            style: const TextStyle(
               color: Config.secondaryColor,
               fontSize: 24,
             ),

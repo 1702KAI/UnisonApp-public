@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unisonapp/main.dart';
 import 'package:unisonapp/models/authModel.dart';
 // import 'package:unisonapp/providers/dio_provider.dart';
 import '../providers/dio_provider.dart';
@@ -82,11 +83,11 @@ class _LoginFormState extends State<LoginForm> {
                   print(_passController.text);
                   final token = await DioProvider()
                       .getToken(_emailController.text, _passController.text);
-                  if (token != null && token.isNotEmpty) {
+                  if (token != null) {
                     // Token retrieval was successful
                     auth.loginSuccess();
                     print(token);
-                    Navigator.of(context).pushNamed('main');
+                    MyApp.navigatorKey.currentState!.pushNamed('main');
                   } else {
                     // Handle the case where token retrieval failed
                     print('Token retrieval failed');
