@@ -1,8 +1,9 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unisonapp/utils/config.dart';
 import '../../data_classes/tasks_data.dart';
+import '../../providers/dio_provider.dart';
 
 class TaskListPage extends StatefulWidget {
   const TaskListPage({Key? key}) : super(key: key);
@@ -17,37 +18,42 @@ class _TaskListPageState extends State<TaskListPage> {
   @override
   void initState() {
     super.initState();
-    // taskDataProvider = Provider.of<TaskDataProvider>(context, listen: false);
+    _fetchTasks();
   }
 
+  Future<void> _fetchTasks() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
 
-  List<TaskData> tasks = [
-    TaskData(
-      description: 'Task 1',
-      dueDate: DateTime.now().add(Duration(days: 1)),
-      taskType: 'Type A',
-    ),
-    TaskData(
-      description: 'Task 2',
-      dueDate: DateTime.now().add(Duration(days: 2)),
-      taskType: 'Type B',
-    ),
-    TaskData(
-      description: 'Task 3',
-      dueDate: DateTime.now().add(Duration(days: 3)),
-      taskType: 'Type C',
-    ),
-    // Add more tasks as needed
-  ];
+    if (token != null) {
+      final List<dynamic> fetchedTasks = await DioProvider().getTasks(token);
+
+      // Convert the fetched data to a list of TaskData objects
+      List<TaskData> fetchedTaskList = fetchedTasks.map((task) {
+        return TaskData(
+          description: task['description'],
+          dueDate: DateTime.parse(task['dueDate']),
+          taskType: task['taskType'],
+        );
+      }).toList();
+
+      setState(() {
+        tasks = fetchedTaskList;
+      });
+    }
+  }
+
+  List<TaskData> tasks = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Config.paintColor,
-        title: Text('Task List',style: const TextStyle(
-          color: Config.secondaryColor
-        ),),
+        title: Text(
+          'Task List',
+          style: const TextStyle(color: Config.secondaryColor),
+        ),
       ),
       body: ListView.builder(
         itemCount: tasks.length,
@@ -94,16 +100,27 @@ class _TaskListPageState extends State<TaskListPage> {
     );
   }
 
-  void _addTask() {
-    // You can implement logic to add a new task here
-    setState(() {
-      tasks.add(TaskData(
-        description: 'New Task',
-        dueDate: DateTime.now().add(Duration(days: 1)),
-        taskType: 'New Type',
-      ));
-    });
+void _addTask() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? token = prefs.getString('token');
+
+  if (token != null) {
+    final TaskData newTask = TaskData(
+      description: 'New Task',
+      dueDate: DateTime.now().add(Duration(days: 1)),
+      taskType: 'New Type',
+    );
+
+    final dynamic response = await DioProvider().createTask(token, 8, newTask);
+
+    if (response != null) {
+      setState(() {
+        tasks.add(newTask);
+      });
+    }
   }
+}
+
 
   void _editTask(int index) {
     // You can implement logic to edit an existing task here

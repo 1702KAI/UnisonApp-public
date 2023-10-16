@@ -8,7 +8,7 @@ class TaskData extends ChangeNotifier {
   TaskData({
     required this.description,
     required this.dueDate,
-    required this.taskType,
+    required this.taskType, 
   });
 
   void setData({

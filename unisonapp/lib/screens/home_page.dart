@@ -56,6 +56,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        Navigator.pushNamed(context, 'viewTasks');
                         // Add your button action here
                       },
                       style: ElevatedButton.styleFrom(

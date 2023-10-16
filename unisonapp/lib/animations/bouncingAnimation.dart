@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:unisonapp/components/button.dart';
+import 'package:unisonapp/utils/config.dart';
 
 class MyAnimatedImage extends StatefulWidget {
   const MyAnimatedImage({super.key});
@@ -59,10 +61,18 @@ class _MyAnimatedImageState extends State<MyAnimatedImage> {
             opacity: showText ? 1.0 : 0.0,
             duration: const Duration(seconds: 1),
             child: const Text(
-              'Your Text Here',
+              'Check your email for your workspace credentials',
               style: TextStyle(fontSize: 20),
             ),
           ),
+          Config.spaceSmall,
+          Button(
+              width: 200,
+              title: 'Login',
+              onPressed: () {
+                Navigator.pushNamed(context, '/');
+              },
+              disable: false)
         ],
       ),
     );

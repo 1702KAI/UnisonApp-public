@@ -27,7 +27,7 @@ class _TasksOverviewState extends State<TasksOverview> {
         return TaskData(
           description: task['description'],
           dueDate: DateTime.parse(task['dueDate']),
-          taskType: task['taskType'],
+          taskType: task['taskType'], 
         );
       }).toList();
 

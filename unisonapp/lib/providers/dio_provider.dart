@@ -37,11 +37,12 @@ class DioProvider {
 
 
 // Create a task
-Future<dynamic> createTask(String token, TaskData task) async {
+Future<dynamic> createTask(String token, int userId, TaskData task) async {
   try {
     var response = await Dio().post(
       'http://127.0.0.1:8000/api/tasks',
       data: {
+        'user_id': userId,
         'description': task.description,
         'dueDate': task.dueDate.toIso8601String(),
         'taskType': task.taskType,

@@ -79,6 +79,7 @@ class MyApp extends StatelessWidget {
         'registrationSuccess':(context) => const RegistrationSuccessPage(),
         'createTasks':(context) => const CreateTasks(),
         'viewTasks':(context) => const TaskListPage(),
+        
       },
     );
   }
